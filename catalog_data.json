@@ -1,0 +1,46 @@
+[
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "manufactured_at": null,
+      "updated_at": "2024-09-13",
+      "created_at": "2024-09-13",
+      "description": null,
+      "preview": "",
+      "category": 3,
+      "price": 80,
+      "name": "Помидор"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "manufactured_at": "2024-09-12",
+      "updated_at": "2024-09-13",
+      "created_at": "2024-09-13",
+      "description": "",
+      "preview": "",
+      "category": 4,
+      "price": 100,
+      "name": "Яблоко"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "description": null,
+      "name": "Овощи"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "description": null,
+      "name": "Фрукты"
+    }
+  }
+]
