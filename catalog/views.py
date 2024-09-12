@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'project_sky/home.html')
 
 
 def contacts(request):
@@ -11,4 +11,4 @@ def contacts(request):
         phone = request.POST.get('phone')
         message = request.POST.get('message')
         print(f"{name} ({phone}): {message}")
-    return render(request, 'contacts.html')
+    return render(request, 'project_sky/contacts.html')
