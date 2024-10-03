@@ -89,7 +89,8 @@ class Blog(models.Model):
         verbose_name="Фото товара",
     )
     count_views = models.IntegerField(
-        verbose_name="количество просмотров"
+        verbose_name="количество просмотров",
+        default=0
     )
     date_of_creation = models.DateTimeField(
         verbose_name="дата создания",
