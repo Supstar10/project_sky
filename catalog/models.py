@@ -77,7 +77,8 @@ class Blog(models.Model):
     )
     slug = models.CharField(
         max_length=100,
-        verbose_name="содержимое"
+        verbose_name="содержимое",
+        unique=True,
     )
     content = models.TextField(
         verbose_name="Содержимое"
@@ -88,7 +89,7 @@ class Blog(models.Model):
         null=True,
         verbose_name="Фото товара",
     )
-    count_views = models.IntegerField(
+    count_views = models.PositiveIntegerField(
         verbose_name="количество просмотров",
         default=0
     )
