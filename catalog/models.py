@@ -116,3 +116,33 @@ class Contact(models.Model):
         verbose_name="Сообщение"
     )
 
+class Version(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='versions'
+    )
+    number = models.PositiveIntegerField(
+        verbose_name="номер версии",
+    )
+    name = models.TextField(
+        max_length=100,
+        verbose_name="название версии"
+    )
+    current_version = models.BooleanField(
+        verbose_name="признак текущей версии",
+        default=True
+    )
+
+    class Meta:
+        verbose_name = "Версия"
+        verbose_name_plural = "Версии"
+
+    def save(self, *args, **kwargs):
+        """ Метод устанавливает все остальные версии продуктов как НЕ текущие"""
+        if self.current_version:
+            Version.objects.filter(product=self.product, current_version=True).update(current_version=False)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.number)
+
+
