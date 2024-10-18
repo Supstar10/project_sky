@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
@@ -23,10 +24,17 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class CreateProductListView(CreateView):
+class CreateProductListView(CreateView, LoginRequiredMixin):
     model = Product
     fields = ("name", "price", "category", "preview", "description")
     success_url = reverse_lazy('catalog:home')
+
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
 
 class ProductUpdateView(UpdateView):
     model = Product
