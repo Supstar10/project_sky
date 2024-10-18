@@ -13,7 +13,7 @@ urlpatterns = [
     path('create/', CreateProductListView.as_view(), name='create_product'),
     path('product/<int:pk>/update', ProductUpdateView.as_view(), name="product_update"),
 
-    path('blog/', BlogListView.as_view(), name='blog_list'),
+    path('blog_list/', BlogListView.as_view(), name='blog_list'),
     path('blog/create/', BlogCreateView.as_view(), name='blog_create'),
     path('<slug:slug>/update/', BlogUpdateView.as_view(), name='update_blog'),
     path('<slug:slug>/delete/', BlogDeleteView.as_view(), name='delete_blog'),
