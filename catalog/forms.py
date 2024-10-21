@@ -33,6 +33,25 @@ class ProductForm(forms.ModelForm):
             raise forms.ValidationError("Описание продукта содержит запрещенные слова.")
         return description
 
+class ProductModeratorForm(forms.ModelForm):
+    FORBIDDEN_WORDS = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+
+    class Meta:
+        model = Product
+        fields = ["sing_of_publication", "description", "category"]
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if any(word in name.lower() for word in self.FORBIDDEN_WORDS):
+            raise forms.ValidationError("Название продукта содержит запрещенные слова.")
+        return name
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if any(word in description.lower() for word in self.FORBIDDEN_WORDS):
+            raise forms.ValidationError("Описание продукта содержит запрещенные слова.")
+        return description
+
 
 class BlogForm(forms.ModelForm):
     class Meta:

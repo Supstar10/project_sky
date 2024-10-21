@@ -43,6 +43,10 @@ class Product(models.Model):
         max_length=100, verbose_name="Название продукта", help_text="Выберите продукт"
     )
     owner = models.ForeignKey(User, verbose_name="Продавец", help_text="Укажите продавца", blank=True, null=True, on_delete=models.SET_NULL)
+    sing_of_publication = models.BooleanField(
+        verbose_name="признак публикации",
+        default=False
+    )
     
     def __str__(self):
         return self.name
@@ -51,6 +55,11 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["category", "price"]
+        permissions = [
+            ("can_cancel_publication", "can cancel the publication of a product"),
+            ("can_change_description", "can change the description of any product"),
+            ("can_change_category", "can change the category of any product")
+        ]
 
 
 class Category(models.Model):
