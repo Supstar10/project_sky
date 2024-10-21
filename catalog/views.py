@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import ListView, TemplateView, CreateView, DetailView, UpdateView, DeleteView
 
-from catalog.forms import VersionForm
+from catalog.forms import VersionForm, ProductForm, ProductModeratorForm
 from catalog.models import Product, Contact, Blog, Version
 
 
@@ -36,7 +37,7 @@ class CreateProductListView(CreateView, LoginRequiredMixin):
         product.save()
         return super().form_valid(form)
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     fields = ("name", "price", "category", "preview", "description")
     success_url = reverse_lazy('catalog:home')
@@ -60,6 +61,15 @@ class ProductUpdateView(UpdateView):
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_cancel_publication") and user.has_perm("catalog.can_change_description") and user.has_perm("catalog.can_change_category"):
+            return ProductModeratorForm
+        raise PermissionDenied
+
 class BlogListView(ListView):
     model = Blog
     queryset = Blog.objects.filter(slug__isnull=False)
