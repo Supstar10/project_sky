@@ -7,11 +7,19 @@ from django.views.generic import ListView, TemplateView, CreateView, DetailView,
 
 from catalog.forms import VersionForm, ProductForm, ProductModeratorForm
 from catalog.models import Product, Contact, Blog, Version
+from catalog.services import get_products_from_cache
 
 
 class ProductListView(ListView):
     model = Product
     paginate_by = 4
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_id = self.request.GET.get('category')
+        if category_id:
+            queryset = queryset.filter(category__id=category_id)
+        return queryset
 
 class ContactsListView(TemplateView):
     template_name = "catalog/contact_list.html"
@@ -23,7 +31,8 @@ class ContactsListView(TemplateView):
 
 class ProductDetailView(DetailView):
     model = Product
-
+    def get_queryset(self):
+        return get_products_from_cache()
 
 class CreateProductListView(CreateView, LoginRequiredMixin):
     model = Product
